@@ -18,6 +18,11 @@
 		7285C6B928679076004FB7DF /* CurrencyConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6B828679076004FB7DF /* CurrencyConversionTests.swift */; };
 		7285C6C328679077004FB7DF /* CurrencyConversionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6C228679077004FB7DF /* CurrencyConversionUITests.swift */; };
 		7285C6C528679077004FB7DF /* CurrencyConversionUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6C428679077004FB7DF /* CurrencyConversionUITestsLaunchTests.swift */; };
+		7285C6D328679938004FB7DF /* CurrencyConverterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6D228679938004FB7DF /* CurrencyConverterViewController.swift */; };
+		7285C6D52867A7D7004FB7DF /* SymbolsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6D42867A7D7004FB7DF /* SymbolsModel.swift */; };
+		7285C6D82867A98B004FB7DF /* ApiNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6D72867A98B004FB7DF /* ApiNetwork.swift */; };
+		7285C6DA2867B78E004FB7DF /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6D92867B78E004FB7DF /* ApiService.swift */; };
+		7285C6DC2867D3D4004FB7DF /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C6DB2867D3D4004FB7DF /* Reachability.swift */; };
 		B9ECF71A644BADCE29F35108 /* Pods_CurrencyConversion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2AB053A61649656AA761EFE /* Pods_CurrencyConversion.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +59,11 @@
 		7285C6BE28679076004FB7DF /* CurrencyConversionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CurrencyConversionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7285C6C228679077004FB7DF /* CurrencyConversionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConversionUITests.swift; sourceTree = "<group>"; };
 		7285C6C428679077004FB7DF /* CurrencyConversionUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConversionUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7285C6D228679938004FB7DF /* CurrencyConverterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterViewController.swift; sourceTree = "<group>"; };
+		7285C6D42867A7D7004FB7DF /* SymbolsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsModel.swift; sourceTree = "<group>"; };
+		7285C6D72867A98B004FB7DF /* ApiNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiNetwork.swift; sourceTree = "<group>"; };
+		7285C6D92867B78E004FB7DF /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		7285C6DB2867D3D4004FB7DF /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		80168B6ABA7F645251DE65D3 /* Pods-CurrencyConversion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyConversion.release.xcconfig"; path = "Target Support Files/Pods-CurrencyConversion/Pods-CurrencyConversion.release.xcconfig"; sourceTree = "<group>"; };
 		9531F459A7B622E97B19202D /* Pods_CurrencyConversionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CurrencyConversionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D08F3819BE756F6DE807DF19 /* Pods-CurrencyConversion-CurrencyConversionUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyConversion-CurrencyConversionUITests.debug.xcconfig"; path = "Target Support Files/Pods-CurrencyConversion-CurrencyConversionUITests/Pods-CurrencyConversion-CurrencyConversionUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -101,7 +111,6 @@
 				152B2180990231E017BD85AA /* Pods-CurrencyConversionTests.debug.xcconfig */,
 				FD4D4C95B6CCAFF058B3CC0E /* Pods-CurrencyConversionTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -130,6 +139,7 @@
 		7285C6A028679073004FB7DF /* CurrencyConversion */ = {
 			isa = PBXGroup;
 			children = (
+				7285C6D1286796AF004FB7DF /* CurrencyConverterModule */,
 				7285C6A128679073004FB7DF /* AppDelegate.swift */,
 				7285C6A328679073004FB7DF /* SceneDelegate.swift */,
 				7285C6A528679073004FB7DF /* ViewController.swift */,
@@ -156,6 +166,26 @@
 				7285C6C428679077004FB7DF /* CurrencyConversionUITestsLaunchTests.swift */,
 			);
 			path = CurrencyConversionUITests;
+			sourceTree = "<group>";
+		};
+		7285C6D1286796AF004FB7DF /* CurrencyConverterModule */ = {
+			isa = PBXGroup;
+			children = (
+				7285C6D62867A96A004FB7DF /* NetworkService */,
+				7285C6D228679938004FB7DF /* CurrencyConverterViewController.swift */,
+				7285C6D42867A7D7004FB7DF /* SymbolsModel.swift */,
+			);
+			path = CurrencyConverterModule;
+			sourceTree = "<group>";
+		};
+		7285C6D62867A96A004FB7DF /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				7285C6DB2867D3D4004FB7DF /* Reachability.swift */,
+				7285C6D72867A98B004FB7DF /* ApiNetwork.swift */,
+				7285C6D92867B78E004FB7DF /* ApiService.swift */,
+			);
+			path = NetworkService;
 			sourceTree = "<group>";
 		};
 		B50F55712C7064AE085C5852 /* Frameworks */ = {
@@ -373,7 +403,12 @@
 			files = (
 				7285C6A628679073004FB7DF /* ViewController.swift in Sources */,
 				7285C6A228679073004FB7DF /* AppDelegate.swift in Sources */,
+				7285C6D328679938004FB7DF /* CurrencyConverterViewController.swift in Sources */,
+				7285C6D82867A98B004FB7DF /* ApiNetwork.swift in Sources */,
 				7285C6A428679073004FB7DF /* SceneDelegate.swift in Sources */,
+				7285C6DA2867B78E004FB7DF /* ApiService.swift in Sources */,
+				7285C6DC2867D3D4004FB7DF /* Reachability.swift in Sources */,
+				7285C6D52867A7D7004FB7DF /* SymbolsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
