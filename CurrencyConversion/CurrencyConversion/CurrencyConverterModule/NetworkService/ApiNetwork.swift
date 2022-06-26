@@ -50,7 +50,7 @@ class ApiNetwork{
     func requestApi(urlString: String , methodTypes: MethodTypes, completionHandler: @escaping (Result<Data, Error>) -> Void){
         
         let headers = [
-            "apikey": "sdtwSNbQDyr3Ch6APEGJgcsmDbEEV1rY"
+            "apikey": "ZxL01VTnWChtwlS4d7agITy8JF99IIQt"
         ]
         
         guard let url = URL(string: urlString) else { return  }
