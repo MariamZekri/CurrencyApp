@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class CurrencyConverterViewController: UIViewController {
     
@@ -20,61 +22,85 @@ class CurrencyConverterViewController: UIViewController {
     var symbols: [String: String] = [:]
     var fromTxt = ""
     var toTxt = ""
+    var disposeBag = DisposeBag()
+    var viewModel = CurrencyConversionViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        viewModel.getSymbols()
+        subScripeObservers()
         
-        ApiService.getListSymbols { symbols in
-            self.symbols = symbols
-            
-        } failure: {
-            error in
-            print(error)
-        }
     }
     
-    
+    func subScripeObservers(){
+        viewModel.symbolsBehaviour.subscribe { symbols in
+            self.symbols = symbols
+        } onError: { error in
+            print(error)
+        }.disposed(by: disposeBag)
+        
+        viewModel.convertedResult.subscribe { conversionResult in
+            if (conversionResult > 0){
+                self.loader.isHidden = true
+                self.conversionTxt.text = "\(conversionResult)"
+            }
+        } onError: { error in
+            print(error)
+        }.disposed(by: disposeBag)
+        amountTxt.rx.text
+            .orEmpty
+            .subscribe(
+                onNext: { text in
+                    if self.fromTxt != "" && self.toTxt != ""{
+                        let amountValue = Double(text)
+                        self.loader.isHidden = false
+                        self.viewModel.updateConvertCurrency(amountValue: amountValue ?? 1.0, fromTxt: self.fromTxt, toTxt: self.toTxt)
+                    }
+                }).disposed(by: disposeBag)
+    }
     
     @IBAction func fromActionBtn(_ sender: Any) {
         showAlert { key in
             self.fromTxt = key
             self.fromBtn.setTitle(key, for: .normal)
             let amountValue = Double(self.amountTxt.text ?? "1.0")
-            self.amountTxt.resignFirstResponder()
-            self.updateConvertCurrency(amountValue: amountValue ?? 1.0)
+            if self.fromTxt != "" && self.toTxt != ""{
+                self.amountTxt.resignFirstResponder()
+                self.loader.isHidden = false
+                self.viewModel.updateConvertCurrency(amountValue: amountValue ?? 1.0, fromTxt: self.fromTxt, toTxt: self.toTxt)
+            }
         }
     }
-    
     
     @IBAction func exchangeActionBtn(_ sender: Any) {
         if fromTxt != "" && toTxt != ""{
-        let fromCurrency = fromTxt
-        fromTxt = toTxt
-        fromBtn.setTitle(toTxt, for: .normal)
-        toBtn.setTitle(fromCurrency, for: .normal)
-        toTxt = fromCurrency
-
-        let amountValue = Double(self.amountTxt.text ?? "1.0")
-        amountTxt.resignFirstResponder()
-        self.updateConvertCurrency(amountValue: amountValue ?? 1.0)
+            let fromCurrency = fromTxt
+            fromTxt = toTxt
+            fromBtn.setTitle(toTxt, for: .normal)
+            toBtn.setTitle(fromCurrency, for: .normal)
+            toTxt = fromCurrency
+            
+            let amountValue = Double(self.amountTxt.text ?? "1.0")
+            amountTxt.resignFirstResponder()
+            self.loader.isHidden = false
+            self.viewModel.updateConvertCurrency(amountValue: amountValue ?? 1.0, fromTxt: self.fromTxt, toTxt: self.toTxt)
         }
     }
-    
     
     @IBAction func toActionBtn(_ sender: Any) {
         showAlert { key in
             self.toTxt = key
             self.toBtn.setTitle(key, for: .normal)
             let amountValue = Double(self.amountTxt.text ?? "1.0")
-            self.amountTxt.resignFirstResponder()
-            self.updateConvertCurrency(amountValue: amountValue ?? 1.0)
+            if self.fromTxt != "" && self.toTxt != ""{
+                self.amountTxt.resignFirstResponder()
+                self.loader.isHidden = false
+                self.viewModel.updateConvertCurrency(amountValue: amountValue ?? 1.0, fromTxt: self.fromTxt, toTxt: self.toTxt)
+            }
         }
         
     }
-    
-    
-    
-    
     func showAlert(completionHandeler: @escaping(String)-> Void){
         let alert = UIAlertController(title: "", message: "Please Select Currency", preferredStyle: .actionSheet)
         
@@ -88,30 +114,6 @@ class CurrencyConverterViewController: UIViewController {
         self.present(alert, animated: true, completion: {
             print("completion block")
         })
-    }
-    
-    func updateConvertCurrency(amountValue: Double) {
-        if fromTxt != "" && toTxt != ""{
-            loader.isHidden = false
-            ApiService.convertCurrency(from: fromTxt, to: toTxt, amount:  amountValue) { result in
-                self.conversionTxt.text = "\(result)"
-                self.loader.isHidden = true
-            } failure: { error in
-                print(error)
-            }
-        }
-    }
-}
-extension CurrencyConverterViewController: UITextFieldDelegate{
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text,
-           let textRange = Range(range, in: text) {
-            let amountValue = Double(text.replacingCharacters(in: textRange,
-                                                              with: string))
-            updateConvertCurrency(amountValue: amountValue ?? 1.0)
-            
-        }
-        return true
     }
     
 }
