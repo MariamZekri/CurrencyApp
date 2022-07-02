@@ -12,8 +12,10 @@ class CurrencyDetailsViewModel{
     var historyBehaviour: BehaviorSubject<[String : [String : Double]]> = BehaviorSubject(value: ["" : ["" : 0.0]])
     var tenCurrenciesBehaviour: BehaviorSubject<[String: Double]> = BehaviorSubject(value: ["" : 0.0])
     
+    private let apiService : ApiServiceProtocol
     
-    init(){
+    init(apiService: ApiServiceProtocol = ApiService()){
+        self.apiService = apiService
     }
     
     func getlastThreeDaysCurrency(fromCurrency: String, toCurrency: String){
@@ -25,7 +27,7 @@ class CurrencyDetailsViewModel{
         let toDate = dateFormatter.string(from: currentDate)
         let fromDate = dateFormatter.string(from: previousDate)
     
-        ApiService.lastThreeDaysCurrency(from: fromDate, to: toDate, base: fromCurrency, symbols: toCurrency, success: { result in
+        apiService.lastThreeDaysCurrency(from: fromDate, to: toDate, base: fromCurrency, symbols: toCurrency, success: { result in
             self.historyBehaviour.onNext(result)
         }, failure: { error in
         
@@ -35,7 +37,7 @@ class CurrencyDetailsViewModel{
     
     func getTenCurrencies(baseCurrency: String){
     
-        ApiService.tenCurrencies(base: baseCurrency, success: { result in
+        apiService.tenCurrencies(base: baseCurrency, success: { result in
             self.tenCurrenciesBehaviour.onNext(result)
         }, failure: { error in
         

@@ -7,9 +7,16 @@
 
 import Foundation
 
-class ApiService{
+protocol ApiServiceProtocol{
+    func getListSymbols(success: @escaping ([String: String]) -> Void,failure: @escaping (String) -> Void)
+    func convertCurrency(from: String, to: String, amount: Double, success: @escaping (Double) -> Void,failure: @escaping (String) -> Void)
+    func lastThreeDaysCurrency(from: String, to: String, base: String, symbols: String, success: @escaping ([String : [String : Double]]) -> Void,failure: @escaping (String) -> Void)
+    func tenCurrencies(base: String, success: @escaping ([String: Double]) -> Void,failure: @escaping (String) -> Void)
+}
+class ApiService: ApiServiceProtocol{
     
-    static func getListSymbols(success: @escaping ([String: String]) -> Void,failure: @escaping (String) -> Void){
+    
+     func getListSymbols(success: @escaping ([String: String]) -> Void,failure: @escaping (String) -> Void){
         
         if Reachability.isConnectedToNetwork(){
             ApiNetwork.shared.requestApi(urlString: "https://api.apilayer.com/fixer/symbols", methodTypes: .get) { result in
@@ -36,7 +43,7 @@ class ApiService{
         }
     }
     
-    static func convertCurrency(from: String, to: String, amount: Double, success: @escaping (Double) -> Void,failure: @escaping (String) -> Void){
+    func convertCurrency(from: String, to: String, amount: Double, success: @escaping (Double) -> Void,failure: @escaping (String) -> Void){
         
         if Reachability.isConnectedToNetwork(){
             ApiNetwork.shared.requestApi(urlString: "https://api.apilayer.com/currency_data/convert?to=\(to)&from=\(from)&amount=\(amount)", methodTypes: .get) { result in
@@ -61,7 +68,7 @@ class ApiService{
         }
     }
     
-    static func lastThreeDaysCurrency(from: String, to: String, base: String, symbols: String, success: @escaping ([String : [String : Double]]) -> Void,failure: @escaping (String) -> Void){
+    func lastThreeDaysCurrency(from: String, to: String, base: String, symbols: String, success: @escaping ([String : [String : Double]]) -> Void,failure: @escaping (String) -> Void){
         
         if Reachability.isConnectedToNetwork(){
             ApiNetwork.shared.requestApi(urlString: "https://api.apilayer.com/fixer/timeseries?start_date=\(from)&end_date=\(to)&base=\(base)&symbols=\(symbols)", methodTypes: .get) { result in
@@ -86,7 +93,7 @@ class ApiService{
         }
     }
     
-    static func tenCurrencies(base: String, success: @escaping ([String: Double]) -> Void,failure: @escaping (String) -> Void){
+func tenCurrencies(base: String, success: @escaping ([String: Double]) -> Void,failure: @escaping (String) -> Void){
         
         if Reachability.isConnectedToNetwork(){
             ApiNetwork.shared.requestApi(urlString: "https://api.apilayer.com/fixer/latest?symbols=GBP%2CJYP%2C%20EUR%2CEGP%2CUSD%2CKWD%2CAUD%2CQAR%2CSAR%2C%20CNY%2CJPY&base=\(base)", methodTypes: .get) { result in
