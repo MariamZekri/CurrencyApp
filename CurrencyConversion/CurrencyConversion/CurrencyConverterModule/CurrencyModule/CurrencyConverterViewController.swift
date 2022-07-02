@@ -60,6 +60,14 @@ class CurrencyConverterViewController: UIViewController {
                 }).disposed(by: disposeBag)
     }
     
+    @IBAction func DetailsActionBtn(_ sender: Any) {
+      
+        guard let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "CurrencyDetailsViewController") as? CurrencyDetailsViewController else { return }
+        secondViewController.fromCurrency = self.fromTxt
+        secondViewController.toCurrency = self.toTxt
+        self.navigationController?.pushViewController(secondViewController, animated: true)
+    }
+    
     @IBAction func fromActionBtn(_ sender: Any) {
         showAlert { key in
             self.fromTxt = key

@@ -60,4 +60,29 @@ class ApiService{
             failure("No Internet Connection")
         }
     }
+    
+    static func lastThreeDaysCurrency(from: String, to: String, base: String, symbols: String, success: @escaping ([String : [String : Double]]) -> Void,failure: @escaping (String) -> Void){
+        
+        if Reachability.isConnectedToNetwork(){
+            ApiNetwork.shared.requestApi(urlString: "https://api.apilayer.com/fixer/timeseries?start_date=\(from)&end_date=\(to)&base=\(base)&symbols=\(symbols)", methodTypes: .get) { result in
+                switch result {
+                case .success(let data):
+                    DispatchQueue.main.async {
+                    let decoder = JSONDecoder()
+                    
+                    do {
+                        let historyModel = try decoder.decode(HistoryModel.self, from: data)
+                        success(historyModel.rates)
+                    } catch {
+                        failure(error.localizedDescription)
+                    }
+                    }
+                case .failure(let error):
+                    failure(error.localizedDescription)
+                }
+            }
+        }else{
+            failure("No Internet Connection")
+        }
+    }
 }
