@@ -85,4 +85,29 @@ class ApiService{
             failure("No Internet Connection")
         }
     }
+    
+    static func tenCurrencies(base: String, success: @escaping ([String: Double]) -> Void,failure: @escaping (String) -> Void){
+        
+        if Reachability.isConnectedToNetwork(){
+            ApiNetwork.shared.requestApi(urlString: "https://api.apilayer.com/fixer/latest?symbols=GBP%2CJYP%2C%20EUR%2CEGP%2CUSD%2CKWD%2CAUD%2CQAR%2CSAR%2C%20CNY%2CJPY&base=\(base)", methodTypes: .get) { result in
+                switch result {
+                case .success(let data):
+                    DispatchQueue.main.async {
+                    let decoder = JSONDecoder()
+                    
+                    do {
+                        let tenCurrenciesModel = try decoder.decode(TenCurrenciesModel.self, from: data)
+                        success(tenCurrenciesModel.rates)
+                    } catch {
+                        failure(error.localizedDescription)
+                    }
+                    }
+                case .failure(let error):
+                    failure(error.localizedDescription)
+                }
+            }
+        }else{
+            failure("No Internet Connection")
+        }
+    }
 }

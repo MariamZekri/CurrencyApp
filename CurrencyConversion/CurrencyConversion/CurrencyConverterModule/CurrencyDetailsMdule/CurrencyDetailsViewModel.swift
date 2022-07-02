@@ -10,6 +10,7 @@ import RxSwift
 
 class CurrencyDetailsViewModel{
     var historyBehaviour: BehaviorSubject<[String : [String : Double]]> = BehaviorSubject(value: ["" : ["" : 0.0]])
+    var tenCurrenciesBehaviour: BehaviorSubject<[String: Double]> = BehaviorSubject(value: ["" : 0.0])
     
     
     init(){
@@ -26,6 +27,16 @@ class CurrencyDetailsViewModel{
     
         ApiService.lastThreeDaysCurrency(from: fromDate, to: toDate, base: fromCurrency, symbols: toCurrency, success: { result in
             self.historyBehaviour.onNext(result)
+        }, failure: { error in
+        
+            print(error)
+        })
+    }
+    
+    func getTenCurrencies(baseCurrency: String){
+    
+        ApiService.tenCurrencies(base: baseCurrency, success: { result in
+            self.tenCurrenciesBehaviour.onNext(result)
         }, failure: { error in
         
             print(error)

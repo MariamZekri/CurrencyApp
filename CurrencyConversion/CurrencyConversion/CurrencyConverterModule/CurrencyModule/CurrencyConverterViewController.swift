@@ -61,11 +61,12 @@ class CurrencyConverterViewController: UIViewController {
     }
     
     @IBAction func DetailsActionBtn(_ sender: Any) {
-      
+        if fromTxt != "" && toTxt != "" {
         guard let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "CurrencyDetailsViewController") as? CurrencyDetailsViewController else { return }
         secondViewController.fromCurrency = self.fromTxt
         secondViewController.toCurrency = self.toTxt
         self.navigationController?.pushViewController(secondViewController, animated: true)
+        }
     }
     
     @IBAction func fromActionBtn(_ sender: Any) {
