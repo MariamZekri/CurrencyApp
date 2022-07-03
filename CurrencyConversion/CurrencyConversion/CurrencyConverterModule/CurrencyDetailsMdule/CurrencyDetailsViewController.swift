@@ -11,9 +11,9 @@ import RxSwift
 class CurrencyDetailsViewController: UIViewController {
 
     
+    @IBOutlet weak var loader: UIActivityIndicatorView!
     @IBOutlet weak var currencyLbl: UILabel!
     @IBOutlet weak var historyTable: UITableView!
-    
     @IBOutlet weak var currency1: UILabel!
     @IBOutlet weak var currency2: UILabel!
     @IBOutlet weak var currency3: UILabel!
@@ -35,6 +35,7 @@ class CurrencyDetailsViewController: UIViewController {
         super.viewDidLoad()
         subScripeObservers()
         // Do any additional setup after loading the view.
+        loader.isHidden = false
         viewModel.getlastThreeDaysCurrency(fromCurrency: fromCurrency, toCurrency: toCurrency)
         viewModel.getTenCurrencies(baseCurrency: fromCurrency)
     }
@@ -44,6 +45,7 @@ class CurrencyDetailsViewController: UIViewController {
             self.histroy = histroy
             self.currencyLbl.text = self.fromCurrency
             self.historyTable.reloadData()
+            self.loader.isHidden = true
         } onError: { error in
             print(error)
         }.disposed(by: disposeBag)
@@ -60,6 +62,7 @@ class CurrencyDetailsViewController: UIViewController {
             self.currency8.text = "\(Array(result)[7].key)  \(Array(result)[7].value)"
             self.currency9.text = "\(Array(result)[8].key)  \(Array(result)[8].value)"
             self.currency10.text = "\(Array(result)[9].key)  \(Array(result)[9].value)"
+                self.loader.isHidden = true
             }
         } onError: { error in
             print(error)
