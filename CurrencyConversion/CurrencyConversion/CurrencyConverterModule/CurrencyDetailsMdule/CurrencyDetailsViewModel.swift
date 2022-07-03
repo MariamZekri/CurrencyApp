@@ -24,8 +24,7 @@ class CurrencyDetailsViewModel{
         apiService.lastThreeDaysCurrency(from: toDateAndFromDate.1, to: toDateAndFromDate.0, base: fromCurrency, symbols: toCurrency, success: { result in
             self.historyBehaviour.onNext(result)
         }, failure: { error in
-        
-            self.historyBehaviour.onError(NSError(domain: error, code: -1))
+            print(error)
     
         })
     }
@@ -45,8 +44,7 @@ class CurrencyDetailsViewModel{
         apiService.tenCurrencies(base: baseCurrency, success: { result in
             self.tenCurrenciesBehaviour.onNext(result)
         }, failure: { error in
-        
-            self.tenCurrenciesBehaviour.onError(NSError(domain: error, code: -1))
+            print(error)
         })
     }
 

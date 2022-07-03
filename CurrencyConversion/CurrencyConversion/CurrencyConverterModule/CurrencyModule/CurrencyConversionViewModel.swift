@@ -24,7 +24,7 @@ class CurrencyConversionViewModel{
             self.symbolsBehaviour.onNext(symbols)
         } failure: {
             error in
-            self.symbolsBehaviour.onError(NSError(domain: error, code: -1))
+            print(error)
         }
     }
     func updateConvertCurrency(amountValue: Double, fromTxt: String, toTxt: String) {
@@ -32,7 +32,7 @@ class CurrencyConversionViewModel{
             apiService.convertCurrency(from: fromTxt, to: toTxt, amount:  amountValue) { result in
                 self.convertedResult.onNext(result)
             } failure: { error in
-                self.convertedResult.onError(NSError(domain: error, code: -1))
+                print(error)
             }
         }
     }
